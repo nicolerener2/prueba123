@@ -30,7 +30,7 @@ function renderCities(): void {
     tr.innerHTML = `<td>
     <strong>${city.getName()}</strong>
     </td>
-    <td>${country}</td>
+    <td class="badge badge-pill badge-primary">${country}</td>
     <td>${duration ? `${duration} días` : "—"}</td>
     <td>${dateFrom}</td>
     <td>${dateTo}</td>
