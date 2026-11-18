@@ -1,9 +1,11 @@
+import Accommodation from "./Accommodation.ts";
 class City {
   #cityName!: string;
   #country!: string;
   #dateFrom!: Date;
   #dateTo!: Date;
   #notes: string = "";
+  #accommodation: Accommodation | undefined;
 
   constructor(
     cityName: unknown,
@@ -68,6 +70,14 @@ class City {
     return;
   }
 
+  getAccommodation(): Accommodation | undefined {
+    return this.#accommodation;
+  }
+
+  addAccommodation(accommodation: Accommodation): void {
+    this.#accommodation = accommodation;
+  }
+
   setName(cityName: unknown): void {
     if (typeof cityName !== "string" || cityName.trim() === "") {
       throw new Error("El nombre de la ciudad debe ser una cadena no vacía");
@@ -125,10 +135,7 @@ class City {
   }
 }
 
-export function calculateDurationDays(
-  dateFrom?: Date,
-  dateTo?: Date,
-): number {
+export function calculateDurationDays(dateFrom?: Date, dateTo?: Date): number {
   if (!dateFrom || !dateTo) return 0;
   const a = new Date(dateFrom);
   const b = new Date(dateTo);

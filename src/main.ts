@@ -1,5 +1,6 @@
 import TripManager from "./domain/tripManager.ts";
 import City from "./domain/city.ts";
+import Accommodation from "./domain/Accommodation.ts";
 
 const manager = new TripManager();
 const form = document.getElementById("city-form") as HTMLFormElement | null;
@@ -15,11 +16,14 @@ function renderCities(): void {
   manager.getAllCities().forEach((city, i) => {
     const tr = document.createElement("tr");
     tr.dataset.index = String(i);
-    const dateFrom = formatDateIso(city.getDateFrom ? city.getDateFrom() : "");
-    const dateTo = formatDateIso(city.getDateTo ? city.getDateTo() : "");
-    const country = city.getCountry ? city.getCountry() || "" : "";
-    const duration = city.getDurationDays() ? city.getDurationDays() : "";
+    const dateFrom = formatDateIso(city.getDateFrom());
+    const dateTo = formatDateIso(city.getDateTo());
+    const country = city.getCountry();
+    const duration = city.getDurationDays();
     const notesText = city.getNotes ? String(city.getNotes() || "") : "";
+    const accommodation = city.getAccommodation();
+    const nameA = accommodation?.getName() ?? "-";
+    const cost = accommodation?.getCost() ?? "-";
     const notesHtml = notesText
       ? notesText
       : '<span class="text-muted">Sin datos</span>';
@@ -30,6 +34,8 @@ function renderCities(): void {
     <td>${duration ? `${duration} días` : "—"}</td>
     <td>${dateFrom}</td>
     <td>${dateTo}</td>
+    <td>${nameA}</td>
+    <td>${cost}</td>
     <td>${notesHtml}</td>`;
     citiesTbody.appendChild(tr);
   });
@@ -38,10 +44,18 @@ function renderCities(): void {
 function handleCityFormSubmit(e: SubmitEvent): void {
   e.preventDefault();
   const name = (document.getElementById("city-name") as HTMLInputElement).value;
-  const country = (document.getElementById("city-country") as HTMLInputElement).value;
-  const dateFrom = (document.getElementById("city-date-from") as HTMLInputElement).value;
-  const dateTo = (document.getElementById("city-date-to") as HTMLInputElement).value;
-  const notes = (document.getElementById("city-notes") as HTMLTextAreaElement).value;
+  const country = (document.getElementById("city-country") as HTMLInputElement)
+    .value;
+  const dateFrom = (
+    document.getElementById("city-date-from") as HTMLInputElement
+  ).value;
+  const dateTo = (document.getElementById("city-date-to") as HTMLInputElement)
+    .value;
+  const nameA = (document.getElementById("nameA") as HTMLInputElement).value;
+  const cost = (document.getElementById("cost") as HTMLInputElement)
+    .valueAsNumber;
+  const notes = (document.getElementById("city-notes") as HTMLTextAreaElement)
+    .value;
 
   const city = new City(
     name,
@@ -50,6 +64,8 @@ function handleCityFormSubmit(e: SubmitEvent): void {
     new Date(dateTo),
     notes,
   );
+  const accommodation = new Accommodation(nameA, cost);
+  city.addAccommodation(accommodation);
   if (!city) {
     showToast("Error", "No se pudo crear la ciudad", "danger");
     return;
@@ -73,9 +89,7 @@ function setDefaultDates(): void {
   const from = document.getElementById(
     "city-date-from",
   ) as HTMLInputElement | null;
-  const to = document.getElementById(
-    "city-date-to",
-  ) as HTMLInputElement | null;
+  const to = document.getElementById("city-date-to") as HTMLInputElement | null;
   if (from && !from.value) from.value = today;
   if (to && !to.value) to.value = today;
 }
@@ -106,11 +120,7 @@ function formatDateIso(d: string | Date): string {
   }
 }
 
-function showToast(
-  title: string,
-  message: string,
-  variant = "primary",
-): void {
+function showToast(title: string, message: string, variant = "primary"): void {
   const container = document.getElementById("alert-container");
   if (!container) return;
 

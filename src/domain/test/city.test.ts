@@ -1,5 +1,6 @@
 import { describe, beforeEach, test, expect } from "vitest";
 import City, { calculateDurationDays } from "../city.ts";
+import Accommodation from "../Accommodation.ts";
 
 function createCity(): City {
   return new City(
@@ -9,6 +10,9 @@ function createCity(): City {
     new Date("2023-05-04"),
     "Notas",
   );
+}
+function createAccommodation(): Accommodation {
+  return new Accommodation("TestAccommodation", 4);
 }
 
 describe("City name", () => {
@@ -132,6 +136,29 @@ describe("City notes", () => {
   test("should get notes correctly", () => {
     expect(city.getNotes()).toBe("Notas");
   });
+});
+
+describe("City accommodation", () => {
+  let city: City;
+  let accommodation: Accommodation;
+  beforeEach(() => {
+    city = createCity();
+    accommodation=createAccommodation();
+    city.addAccommodation(accommodation);
+  });
+
+  test("should get the correct accommodation name", () => {
+    expect(city.getAccommodation()?.getName()).toBe("TestAccommodation");
+  });
+
+  test("should get the correct accommodation cost", () => {
+    expect(city.getAccommodation()?.getCost()).toBe(4);
+  }); 
+
+  test("should get the correct accommodation ", () => {
+    expect(city.getAccommodation()).toBe(accommodation);
+  }); 
+
 });
 
 describe("Duration in days", () => {

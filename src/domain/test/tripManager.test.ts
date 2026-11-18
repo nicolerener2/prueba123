@@ -14,12 +14,12 @@ describe("TripManager", () => {
 
   test("find city by name", () => {
     const city = new City(
-    "TestCity",
-    "TestCountry",
-    new Date("2023-05-01"),
-    new Date("2023-05-04"),
-    "Notas",
-  );
+      "TestCity",
+      "TestCountry",
+      new Date("2023-05-01"),
+      new Date("2023-05-04"),
+      "Notas",
+    );
     manager.addCity(city);
 
     expect(manager.findCityByName("TestCity")).toBe(city);
