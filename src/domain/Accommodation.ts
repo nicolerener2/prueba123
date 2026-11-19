@@ -1,21 +1,10 @@
 class Accommodation {
-  #name!: string;
+  #accommmodationName!: string;
   #cost!: number;
 
-  constructor(name: unknown, cost: unknown) {
-    this.setName(name);
+  constructor(accommodationName: unknown, cost: unknown) {
+    this.setAccommodationName(accommodationName);
     this.setCost(cost);
-  }
-
-  getName(): string {
-    return this.#name;
-  }
-
-  setName(name: unknown): void {
-    if (typeof name !== "string" || name.trim() === "") {
-      throw new Error("El nombre debe ser una cadena no vacía");
-    }
-    this.#name = name.trim();
   }
 
   getCost(): number {
@@ -23,16 +12,30 @@ class Accommodation {
   }
 
   setCost(cost: unknown): void {
-    if (typeof cost !== "number") {
-      throw new Error("El cost debe ser una numero");
+    if (cost === null || cost === undefined || typeof cost !== "number") {
+      throw new Error("El costo debe ser un numero valido");
     }
-    if (!Number.isFinite(cost)) {
-      throw new Error("Cost is required");
+    if (!isFinite(cost)) {
+      throw new Error("El costo debe ser un num valido");
     }
     if (cost < 0) {
-      throw new Error("Cost must be 0 or bigger");
+      throw new Error("El costo debe ser mayor o igual a 0");
     }
     this.#cost = cost;
+  }
+
+  getNameAccommodaton(): string {
+    return this.#accommmodationName;
+  }
+
+  setAccommodationName(accommodationName: unknown): void {
+    if (
+      typeof accommodationName !== "string" ||
+      accommodationName.trim() === ""
+    ) {
+      throw new Error("El nombre debe ser una cadena no vacía");
+    }
+    this.#accommmodationName = accommodationName.trim();
   }
 }
 export default Accommodation;

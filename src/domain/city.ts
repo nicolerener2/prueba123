@@ -4,14 +4,15 @@ class City {
   #country!: string;
   #dateFrom!: Date;
   #dateTo!: Date;
+  #accommodation?: Accommodation;
   #notes: string = "";
-  #accommodation: Accommodation | undefined;
 
   constructor(
     cityName: unknown,
     country: unknown,
     dateFrom: unknown,
     dateTo: unknown,
+    accommodation: Accommodation,
     notes: unknown = "",
   ) {
     this.setName(cityName);
@@ -19,6 +20,7 @@ class City {
     this.validateDatesOrder(dateFrom, dateTo);
     this.setDateFrom(dateFrom);
     this.setDateTo(dateTo);
+    this.addAccommodation(accommodation);
     this.setNotes(notes);
   }
 
@@ -38,6 +40,14 @@ class City {
 
   getName(): string {
     return this.#cityName;
+  }
+
+  getAccommodation(): Accommodation | undefined {
+    return this.#accommodation;
+  }
+
+  addAccommodation(accommodation: Accommodation) {
+    this.#accommodation = accommodation;
   }
 
   getDateFrom(): string {
@@ -68,14 +78,6 @@ class City {
     }
     this.#dateTo = new Date(date.toISOString().slice(0, 10));
     return;
-  }
-
-  getAccommodation(): Accommodation | undefined {
-    return this.#accommodation;
-  }
-
-  addAccommodation(accommodation: Accommodation): void {
-    this.#accommodation = accommodation;
   }
 
   setName(cityName: unknown): void {

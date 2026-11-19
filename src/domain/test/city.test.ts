@@ -2,17 +2,19 @@ import { describe, beforeEach, test, expect } from "vitest";
 import City, { calculateDurationDays } from "../city.ts";
 import Accommodation from "../Accommodation.ts";
 
+function createAccommodation(): Accommodation {
+  return new Accommodation("TestAccommodation", 100);
+}
+
 function createCity(): City {
   return new City(
     "TestCity",
     "TestCountry",
     new Date("2023-05-01"),
     new Date("2023-05-04"),
+    createAccommodation(),
     "Notas",
   );
-}
-function createAccommodation(): Accommodation {
-  return new Accommodation("TestAccommodation", 4);
 }
 
 describe("City name", () => {
@@ -27,6 +29,20 @@ describe("City name", () => {
 
   test("should throw error if city name is empty", () => {
     expect(() => city.setName(" ")).toThrow();
+  });
+});
+
+describe("Accommodation", () => {
+  let city: City;
+  let accommodation: Accommodation;
+  beforeEach(() => {
+    city = createCity();
+    accommodation = createAccommodation();
+    city.addAccommodation(accommodation);
+  });
+
+  test("should get the correct accommodation", () => {
+    expect(city.getAccommodation()).toBe(accommodation);
   });
 });
 
@@ -83,8 +99,9 @@ describe("City dates", () => {
   });
 
   test("should throw error if a date is missing", () => {
-    expect(() => city.validateDatesOrder(null, new Date("2023-05-04")))
-      .toThrow("Both dateFrom and dateTo are required");
+    expect(() => city.validateDatesOrder(null, new Date("2023-05-04"))).toThrow(
+      "Both dateFrom and dateTo are required",
+    );
   });
 
   test("should throw error if a date is invalid", () => {
@@ -100,9 +117,9 @@ describe("City dates", () => {
   });
 
   test("should throw error if a date has an unsupported type", () => {
-    expect(() =>
-      city.validateDatesOrder({}, new Date("2023-05-04")),
-    ).toThrow("Invalid date format");
+    expect(() => city.validateDatesOrder({}, new Date("2023-05-04"))).toThrow(
+      "Invalid date format",
+    );
   });
 });
 
@@ -138,29 +155,6 @@ describe("City notes", () => {
   });
 });
 
-describe("City accommodation", () => {
-  let city: City;
-  let accommodation: Accommodation;
-  beforeEach(() => {
-    city = createCity();
-    accommodation=createAccommodation();
-    city.addAccommodation(accommodation);
-  });
-
-  test("should get the correct accommodation name", () => {
-    expect(city.getAccommodation()?.getName()).toBe("TestAccommodation");
-  });
-
-  test("should get the correct accommodation cost", () => {
-    expect(city.getAccommodation()?.getCost()).toBe(4);
-  }); 
-
-  test("should get the correct accommodation ", () => {
-    expect(city.getAccommodation()).toBe(accommodation);
-  }); 
-
-});
-
 describe("Duration in days", () => {
   let city: City;
   beforeEach(() => {
@@ -191,6 +185,7 @@ describe("Duration in days", () => {
       "TestCountry",
       new Date("2023-05-01"),
       new Date("2023-05-01"),
+      createAccommodation(),
       "Notes",
     );
     expect(singleDayCity.getDurationDays()).toBe(1);

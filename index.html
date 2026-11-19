@@ -53,6 +53,7 @@
         <div class="tab-pane fade show active" id="tab-add" role="tabpanel">
           <div class="row">
             <div class="col-12 mb-4">
+              <div id="alert-container"></div> 
               <form id="city-form" class="row g-3">
                 <fieldset class="col-12 border rounded p-3">
                   <legend class="float-none w-auto px-2 fs-5">
@@ -98,13 +99,14 @@
                   </legend>
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <label for="city-name" class="form-label">Nombre</label>
-                      <input id="nameA" class="form-control" required />
+                      <label for="accommodation-name" class="form-label">Nombre Alojamiento</label>
+                      <input id="accommodation-name" required class="form-control" required />
                     </div>
                     <div class="col-md-6">
-                      <label for="city-country" class="form-number">Costo</label>
-                      <input id="cost" required type="number" class="form-number" />
+                      <label for="accommodation-cost" class="form-label">Costo Alojamineto</label>
+                      <input id="accommodation-cost" required type="number" class="form-control" />
                     </div>
+                  </div>
                 </fieldset>
 
                 <div class="col-12">
@@ -139,8 +141,8 @@
                     <th>Duración</th>
                     <th>Fecha ida</th>
                     <th>Fecha vuelta</th>
-                    <th>Alojamiento</th>
-                    <th>Costo</th>
+                    <th>Nombre alojamiento</th>
+                    <th>Costo Alojamineto</th>
                     <th>Notas</th>
                   </tr>
                 </thead>
